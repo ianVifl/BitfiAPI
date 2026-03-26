@@ -32,7 +32,7 @@ public class AccountService {
         }
         //si no esta vacia , obtenemos el cliente que ya sabemos que SI existe
         Customer cliente = clienteOpt.get();
-        //en esta línea cliente ya es un objeto CustomeRlo cuál se asignó el contenido del Optional que ya sabemos
+        //en esta línea cliente ya es un objeto Customer lo cuál se asignó el contenido del Optional que ya sabemos
         //que era un cliente existente y por tánto un objeto válido que podemos manejar
 
 

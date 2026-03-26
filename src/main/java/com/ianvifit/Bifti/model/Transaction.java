@@ -1,6 +1,7 @@
 package com.ianvifit.Bifti.model;
 
 import jakarta.persistence.*;
+import jakarta.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -20,12 +21,17 @@ public class Transaction {
     @GeneratedValue(strategy=GenerationType.IDENTITY)
     private Long id;
 
+    @NotNull(message = "El monto no puede ser nulo")
+    @Column(nullable = false)
     private BigDecimal amount;
 
+    @NotNull(message = "El tipo de transacción no puede ser nulo")
     @Column(nullable = false)// no nulo
-    @Enumerated(EnumType.STRING) // Guarda el TEXTO de l enum ("DEPOSITO")
+    @Enumerated(EnumType.STRING) // Guarda el TEXTO del enum ("DEPOSITO")
     private TransactionType tipoDeTransaccion;
 
+
+    @Column(nullable = false)
     private LocalDate fechaTransaccion;
 
     @ManyToOne(fetch = FetchType.LAZY)
