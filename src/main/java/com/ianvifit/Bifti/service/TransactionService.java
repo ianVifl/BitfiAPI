@@ -5,9 +5,13 @@ import com.ianvifit.Bifti.model.Transaction;
 import com.ianvifit.Bifti.model.TransactionType;
 import com.ianvifit.Bifti.repository.AccountRepository;
 import com.ianvifit.Bifti.repository.TransactionRepository;
+import jakarta.transaction.Transactional;
+import org.springframework.stereotype.Service;
 
 import java.math.BigDecimal;
+import java.util.List;
 
+@Service
 public class TransactionService {
 
 
@@ -21,7 +25,7 @@ public class TransactionService {
     }
 
 
-
+    @Transactional
     public Transaction retiro (Account cuenta, BigDecimal monto){
     if (cuenta.getSaldo().compareTo(monto) < 0 ){
         throw new IllegalArgumentException("NO hay suficiente saldo ");
@@ -40,8 +44,38 @@ public class TransactionService {
         }
     }
 
-
+    @Transactional
     public Transaction deposito (Account cuenta, BigDecimal monto ){
+    if(monto.compareTo(BigDecimal.ZERO) <= 0 ){
+        throw new IllegalArgumentException("El monto a depositar no puede ser menor o igual a cero ");
+    }else{
+        cuenta.setSaldo(cuenta.getSaldo().add(monto));
+        accountRepository.save(cuenta);
+
+        Transaction reciboDeposito = new Transaction();
+        reciboDeposito.setAmount(monto);
+        reciboDeposito.setTipoDeTransaccion(TransactionType.valueOf("DEPOSITO"));
+        reciboDeposito.setAccount(cuenta);
+
+        transactionRepository.save(reciboDeposito);
+        return reciboDeposito;
+        }
+
+    }
+    @Transactional
+    public List<Transaction> transferencia (Account cuentaOrigen, Account cuentaDestino, BigDecimal monto){
+        if(cuentaDestino==null){
+            throw new IllegalArgumentException("La cuenta a la que intentas transaferir no existe");
+        }else{
+            if(cuentaOrigen.getSaldo().compareTo(monto) >= 0 ) {
+                Transaction reciboSalida = this.retiro(cuentaOrigen, monto);
+                Transaction reciboEntrada= this.deposito(cuentaDestino, monto);
+                return List.of(reciboSalida,reciboEntrada);
+            }else{
+                throw new IllegalArgumentException("NO hay suficiente dinero en tu cuenta");
+            }
+
+        }
 
     }
 }

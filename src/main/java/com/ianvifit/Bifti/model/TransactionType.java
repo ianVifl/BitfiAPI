@@ -4,5 +4,6 @@ public enum TransactionType {
 
     DEPOSITO,
     RETIRO,
-    TRANSFERENCIA
+    TRANSFERENCIA_ENTRADA,
+    TRANSFERENCIA_SALIDA
 }
