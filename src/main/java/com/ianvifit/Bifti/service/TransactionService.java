@@ -10,6 +10,7 @@ import org.springframework.stereotype.Service;
 
 import java.math.BigDecimal;
 import java.util.List;
+import java.util.Optional;
 
 @Service
 public class TransactionService {
@@ -75,6 +76,43 @@ public class TransactionService {
                 throw new IllegalArgumentException("NO hay suficiente dinero en tu cuenta");
             }
 
+        }
+
+    }
+
+    public Transaction procesarRetiro(Long idCuenta , BigDecimal monto){
+        Optional <Account>cuentaBuscada = accountRepository.findById(idCuenta);
+        if(cuentaBuscada.isEmpty()){
+            throw new IllegalArgumentException("No se encontro la cuenta requerida");
+        }else{
+            Account cuentaEncontrada = cuentaBuscada.get();
+            return this.retiro(cuentaEncontrada,monto);
+
+        }
+    }
+
+    public Transaction procesarDeposito(Long idCuenta , BigDecimal monto ){
+        Optional <Account> cuentaBusacada= accountRepository.findById(idCuenta);
+        if(cuentaBusacada.isEmpty()){
+            throw new IllegalArgumentException("No se encontro la cuenta especificada");
+        }else{
+            Account cuentaEncontrada = cuentaBusacada.get();
+            return this.deposito(cuentaEncontrada,monto);
+        }
+
+    }
+
+    public List<Transaction> procesarTransferencia(Long idCuentaOrigen , Long idCuentaDestino , BigDecimal monto){
+        Optional<Account> origenBuscada = accountRepository.findById(idCuentaOrigen);
+        Optional<Account> destinoBuscada = accountRepository.findById(idCuentaDestino);
+
+        if (origenBuscada.isEmpty() || destinoBuscada.isEmpty()){
+            throw new IllegalArgumentException("Alguna de las dos cuentas no fue encontrada.");
+        }else{
+            Account origenEncontrada = origenBuscada.get();
+            Account destinoEncontrada = destinoBuscada.get();
+
+            return this.transferencia(origenEncontrada,destinoEncontrada,monto);
         }
 
     }
