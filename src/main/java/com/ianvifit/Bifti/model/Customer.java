@@ -9,9 +9,12 @@ import jakarta.validation.constraints.Size;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import org.springframework.data.annotation.CreatedDate;
+import org.springframework.data.annotation.LastModifiedBy;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.List;
 
 
@@ -23,6 +26,12 @@ import java.util.List;
 @Table(name ="bank_customers")
 
 public class Customer {
+
+    @CreatedDate
+    LocalDateTime createdAt; // fecha de creación CUSTOMER, se llena automáticamente gracias a @CreatedDate y AuditingEntityListener
+
+    @LastModifiedBy
+    LocalDateTime modifyedAt;
 
     @Id
     @GeneratedValue(strategy=GenerationType.IDENTITY)

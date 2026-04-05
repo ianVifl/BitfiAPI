@@ -1,5 +1,6 @@
 package com.ianvifit.Bifti.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.*;
 import lombok.AllArgsConstructor;
@@ -18,7 +19,7 @@ import java.util.List;
 @NoArgsConstructor // crea un contructor vacio porque el JPA lo necesita ya que primero crea el objeto y luego lo rellena
 @AllArgsConstructor// crea un constructor con todos los atributos, util para pruebas o para crear objetos rapidamente
 @Table(name ="accounts")
-@EntityListeners(AuditingEntityListener.class) // para que se ejecuten las auditorias de createdAt y updatedAt
+@EntityListeners(AuditingEntityListener.class) // para que se ejecuten las auditorias de createdAt y updatedAt FECHAS Y HORAS
 @Entity
 public class Account {
 
@@ -35,6 +36,7 @@ public class Account {
 
     @ManyToOne(fetch = FetchType.LAZY) //lazy trae los datos del cliente solo cuando se necesitan(mejor rendimiento)
     @JoinColumn(name="customer_id" ,nullable = false ) //nombre de la columna en la tabla de cuentas que referencia al cliente
+    @JsonIgnore
     private Customer customer;
 
 

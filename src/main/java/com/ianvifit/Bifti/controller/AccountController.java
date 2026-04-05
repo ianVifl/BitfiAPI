@@ -22,4 +22,9 @@ public class AccountController {
         //es decir, se extrae el valor de idCliente de la URL y se asigna a la variable idCliente del metodo crearCuenta
         return accountService.crearCuenta(idCliente,account);
     }
+
+    @GetMapping("/{idCliente}")
+    public Account verCuenta(@PathVariable Long idCliente){
+        return accountService.verCuenta(idCliente);
+    }
 }

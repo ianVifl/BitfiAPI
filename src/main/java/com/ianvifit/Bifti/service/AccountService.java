@@ -1,6 +1,7 @@
 package com.ianvifit.Bifti.service;
 
 
+import com.ianvifit.Bifti.controller.AccountController;
 import com.ianvifit.Bifti.model.Account;
 import com.ianvifit.Bifti.model.Customer;
 import com.ianvifit.Bifti.repository.AccountRepository;
@@ -46,6 +47,15 @@ public class AccountService {
         return accountRepository.save(nuevaCuenta);
 
 
+    }
+
+    public Account verCuenta (Long idCliente){
+        Optional<Account> cuentaBuscada= accountRepository.findById(idCliente);
+        if (cuentaBuscada.isEmpty()){
+            throw new RuntimeException("El la cuenta con id "+ idCliente+ " no se encontro");
+        }else{
+            return cuentaBuscada.get();
+        }
     }
 
 
