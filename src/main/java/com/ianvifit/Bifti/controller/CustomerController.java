@@ -1,8 +1,10 @@
 package com.ianvifit.Bifti.controller;
 
 
+import com.ianvifit.Bifti.dto.CustomerUpdateDTO;
 import com.ianvifit.Bifti.model.Customer;
 import com.ianvifit.Bifti.service.CustomerService;
+import jakarta.validation.Valid;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -27,9 +29,14 @@ public class CustomerController {
 
     @GetMapping
     public List<Customer> getAllCustomers() {
-        //vas a obtener una lista de objetos Customer y vas a retornar todos los clientes
+        //vas a obtener una lista de objetos Customer y vas a retornar todos los customers
         return this.customerService.listarClientes();
         //findAll es un metodo del JpaRepository que retorna todos los registros de la tabla Customer
+    }
+
+    @PutMapping
+    public Customer updateCustomer(@RequestBody @Valid CustomerUpdateDTO customer,@PathVariable Long idCliente) {
+        return this.customerService.actualizarCliente(idCliente,customer);
     }
 
 
